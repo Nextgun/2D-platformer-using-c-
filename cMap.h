@@ -30,4 +30,12 @@ class cMap_Village1 : public cMap
 {
 public:
 	cMap_Village1();
+	
+};
+
+class cMap_Village2 : public cMap
+{
+public:
+	cMap_Village2();
+
 };
