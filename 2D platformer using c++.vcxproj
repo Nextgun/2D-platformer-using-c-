@@ -149,12 +149,16 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\2D Project;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="olcConsoleGameEngineOOP.cpp" />
+    <ClCompile Include="RPG_Assets.cpp" />
+    <ClCompile Include="RPG_Commands.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cDynamic.h" />
     <ClInclude Include="cDynamicCreature.h" />
     <ClInclude Include="cMap.h" />
     <ClInclude Include="olcConsoleGameEngineOOP.h" />
+    <ClInclude Include="RPG_Assets.h" />
+    <ClInclude Include="RPG_Commands.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

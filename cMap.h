@@ -1,6 +1,7 @@
 #pragma once
 
 #include "olcConsoleGameEngineOOP.h"
+#include "RPG_Assets.h"
 
 class cMap
 {
@@ -29,4 +30,12 @@ class cMap_Village1 : public cMap
 {
 public:
 	cMap_Village1();
+	
+};
+
+class cMap_Village2 : public cMap
+{
+public:
+	cMap_Village2();
+
 };

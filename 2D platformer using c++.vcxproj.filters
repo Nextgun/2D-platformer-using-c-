@@ -24,10 +24,16 @@
     <ClCompile Include="olcConsoleGameEngineOOP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cDynamic.cpp">
+    <ClCompile Include="RPG_Assets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+     <ClCompile Include="cDynamic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cDynamicCreature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RPG_Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,10 +44,16 @@
     <ClInclude Include="olcConsoleGameEngineOOP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RPG_Assets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cDynamic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cDynamicCreature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RPG_Commands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
