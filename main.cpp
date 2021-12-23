@@ -7,6 +7,8 @@ using namespace std;
 
 #include "olcConsoleGameEngineOOP.h"
 #include "cMap.h"
+#include "cDynamic.h"
+#include "cDynamicCreature.h"
 
 class HJ_Platformer : public olcConsoleGameEngineOOP
 {
@@ -18,11 +20,7 @@ public:
 private:
 	cMap* m_pCurrentMap = nullptr;
 
-	float fPlayerPosX = 15.0f;
-	float fPlayerPosY = 15.0f;
-
-	float fPlayerVelX = 0.0f;
-	float fPlayerVelY = 0.0f;
+	cDynamic* m_pPlayer = nullptr;
 
 	float fCameraPosX = 0.0f;
 	float fCameraPosY = 0.0f;
@@ -33,86 +31,88 @@ protected:
 	{
 		m_pCurrentMap = new cMap_Village1();
 
+		m_pPlayer = new cDynamicCreature("player", RPG_Assets::get().GetSprite("player"));
+		m_pPlayer->px = 5.0f;
+		m_pPlayer->py = 5.0f;
 
 		return true;
 	}
 
 	virtual bool OnUserUpdate(float fElapsedTime)
 	{
-
-		fPlayerVelX = 0.0f;
-		fPlayerVelY = 0.0f;
-
 		//Handle Input
 		if (IsFocused())
 		{
 			if (GetKey(VK_UP).bHeld)
 			{
-				fPlayerVelY = -6.0f;
+				m_pPlayer->vy = -6.0f;
 			}
 
 			if (GetKey(VK_DOWN).bHeld)
 			{
-				fPlayerVelY = 6.0f;
+				m_pPlayer->vy = 6.0f;
 			}
 
 			if (GetKey(VK_LEFT).bHeld)
 			{
-				fPlayerVelX = -6.0f;
+				m_pPlayer->vx = -6.0f;
 			}
 
 			if (GetKey(VK_RIGHT).bHeld)
 			{
-				fPlayerVelX = 6.0f;
+				m_pPlayer->vx = 6.0f;
 			}
 		}
+		
+		cDynamic* object = m_pPlayer;
 
-		float fNewPlayerPosX = fPlayerPosX + fPlayerVelX * fElapsedTime;
-		float fNewPlayerPosY = fPlayerPosY + fPlayerVelY * fElapsedTime;
+		float fNewObjectPosX = object->px + object->vx * fElapsedTime;
+		float fNewObjectPosY = object->py + object->vy * fElapsedTime;
 
 		//Collision
-		if (fPlayerVelX <= 0)
+		if (object->vx <= 0)
 		{
-			if (m_pCurrentMap->GetSolid(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.0f) || m_pCurrentMap->GetSolid(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.9f) )
+			if (m_pCurrentMap->GetSolid(object->px + 0.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(object->px + 0.0f, object->py + 0.9f) )
 			{
-				fNewPlayerPosX = (int)fNewPlayerPosX + 1;
-				fPlayerVelX = 0;
+				fNewObjectPosX = (int)fNewObjectPosX + 1;
+				object->vx = 0;
 			}
 				 
 		}
 		else
 		{
-			if (m_pCurrentMap->GetSolid(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.0f) || m_pCurrentMap->GetSolid(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.9f) )
+			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.9f) )
 			{
-				fNewPlayerPosX = (int)fNewPlayerPosX;
-				fPlayerVelX = 0;
+				fNewObjectPosX = (int)fNewObjectPosX;
+				object->vx = 0;
 			}
 		}
 
-		if (fPlayerVelY <= 0)
+		if (object->vy <= 0)
 		{
-			if (m_pCurrentMap->GetSolid(fNewPlayerPosX + 0.0f, fNewPlayerPosY) || m_pCurrentMap->GetSolid(fNewPlayerPosX + 0.9f, fNewPlayerPosY) )
+			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY) )
 			{
-				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
-				fPlayerVelX = 0;
+				fNewObjectPosY = (int)fNewObjectPosY + 1;
+				object->vx = 0;
 			}
 
 		}
 		else
 		{
-			if (m_pCurrentMap->GetSolid(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f) || m_pCurrentMap->GetSolid(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f))
+			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY + 1.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY + 1.0f))
 			{
-				fNewPlayerPosY = (int)fNewPlayerPosY;
-				fPlayerVelY = 0;
+				fNewObjectPosY = (int)fNewObjectPosY;
+				object->vy = 0;
 			}
 		}
 
-		fPlayerPosX = fNewPlayerPosX;
-		fPlayerPosY = fNewPlayerPosY;
+		object->px = fNewObjectPosX;
+		object->py = fNewObjectPosY;
 
+		object->Update(fElapsedTime);
 
-		fCameraPosX = fPlayerPosX;
-		fCameraPosY = fPlayerPosY;
+		fCameraPosX = m_pPlayer->px;
+		fCameraPosY = m_pPlayer->py;
 
 		// Draw the level
 		int nTileWidth = 16;
@@ -149,10 +149,9 @@ protected:
 			}
 		}
 
-		//Draw Player
-		Fill((fPlayerPosX - fOffsetX) * nTileWidth, (fPlayerPosY - fOffsetY) * nTileWidth, (fPlayerPosX - fOffsetX + 1.0f) * nTileWidth, (fPlayerPosY - fOffsetY + 1.0f) * nTileHeight, PIXEL_SOLID, FG_GREEN);
-
-
+		//Draw object
+		object->DrawSelf(this, fOffsetX, fOffsetY);
+		
 		return true;
 	}
 };

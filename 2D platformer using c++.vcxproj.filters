@@ -24,12 +24,24 @@
     <ClCompile Include="olcConsoleGameEngineOOP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cDynamic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cDynamicCreature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="olcConsoleGameEngineOOP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cDynamic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cDynamicCreature.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

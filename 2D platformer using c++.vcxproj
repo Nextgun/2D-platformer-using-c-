@@ -141,6 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cDynamic.cpp" />
+    <ClCompile Include="cDynamicCreature.cpp" />
     <ClCompile Include="cMap.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Hector School\GitHub\2D platformer using c++;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -149,6 +151,8 @@
     <ClCompile Include="olcConsoleGameEngineOOP.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cDynamic.h" />
+    <ClInclude Include="cDynamicCreature.h" />
     <ClInclude Include="cMap.h" />
     <ClInclude Include="olcConsoleGameEngineOOP.h" />
   </ItemGroup>
