@@ -60,8 +60,25 @@ cMap_Village1::cMap_Village1()
 	Create("rpgdata/map/village1.lvl", RPG_Assets::get().GetSprite("village"), "coder town");
 }
 
-cMap_Village2::cMap_Village2()
+bool cMap_Village1::PopulateDynamics(vector<cDynamic*> &vDynamics)
 {
-	Create("rpgdata/map/village2.lvl", RPG_Assets::get().GetSprite("village"), R"(bug town)");
+	// add teleporter
+	vDynamics.push_back(new cDynamic_Teleport(12.0f, 6.0f, "home", 5.0f, 12.0f));
+
+	return true;
 }
 
+cMap_Home1::cMap_Home1()
+{
+	Create("rpgdata/map/home.lvl", RPG_Assets::get().GetSprite("village"), "Home");
+}
+
+
+bool cMap_Home1::PopulateDynamics(vector<cDynamic*>& vDynamics)
+{
+	// add teleporter
+	vDynamics.push_back(new cDynamic_Teleport(5.0f, 13.0f, "coder town", 12.0f, 7.0f));
+	vDynamics.push_back(new cDynamic_Teleport(4.0f, 13.0f, "coder town", 12.0f, 7.0f));
+
+	return true;
+}

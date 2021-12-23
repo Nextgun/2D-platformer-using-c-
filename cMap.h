@@ -19,6 +19,7 @@ public:
 	bool GetSolid(int x, int y);
 	bool Create(string fileData, olcSprite* sprite, string name);
 
+	virtual bool PopulateDynamics(vector<cDynamic*>& vDynamics);
 
 private:
 	int* m_indices = nullptr;
@@ -30,12 +31,16 @@ class cMap_Village1 : public cMap
 {
 public:
 	cMap_Village1();
-	
+
+	bool PopulateDynamics(vector<cDynamic*> &vDynamics);
+
 };
 
-class cMap_Village2 : public cMap
+class cMap_Home1 : public cMap
 {
 public:
-	cMap_Village2();
+	cMap_Home1();
+
+	bool PopulateDynamics(vector<cDynamic*>& vDynamics);
 
 };
