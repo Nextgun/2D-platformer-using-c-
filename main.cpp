@@ -11,7 +11,7 @@ using namespace std;
 #include "cDynamic.h"
 #include "cDynamicCreature.h"
 #include "RPG_Commands.h"
-#include <olcConsoleGameEngineOOP.cpp>
+//#include <olcConsoleGameEngineOOP.cpp>
 
 class HJ_Platformer : public olcConsoleGameEngineOOP
 {
@@ -69,6 +69,7 @@ protected:
 		m_pPlayer->px = 5.0f;
 		m_pPlayer->py = 5.0f;
 
+
 		return true;
 	}
 
@@ -80,8 +81,8 @@ protected:
 		if (m_script.bUserControlEnabled)
 		{
 
-
-
+			m_pPlayer->vx = 0.0f;
+			m_pPlayer->vy = 0.0f;
 
 			//Handle Input
 			if (IsFocused())
@@ -123,7 +124,7 @@ protected:
 		//Collision
 		if (object->vx <= 0)
 		{
-			if (m_pCurrentMap->GetSolid(object->px + 0.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(object->px + 0.0f, object->py + 0.9f) )
+			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.9f) )
 			{
 				fNewObjectPosX = (int)fNewObjectPosX + 1;
 				object->vx = 0;
@@ -214,7 +215,7 @@ protected:
 int main()
 {
 	HJ_Platformer game;
-	if (game.ConstructConsole(256, 240, 4, 4))
+	if (game.ConstructConsole(117, 110, 4, 4))
 		game.Start();
 
 	return 0;
