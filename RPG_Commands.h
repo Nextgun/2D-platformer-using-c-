@@ -1,8 +1,11 @@
 #pragma once
+
 #include "cDynamic.h"
 #include <list>
 
 using namespace std;
+
+class HJ_Platformer;
 
 class cCommand
 {
@@ -15,6 +18,8 @@ public:
 
 	virtual void Start() {}
 	virtual void Update(float fElapsedTime) {};
+	
+	static HJ_Platformer* g_engine;
 };
 
 class cScriptProcessor
@@ -25,6 +30,7 @@ public:
 public:
 	void AddCommand(cCommand* cmd);
 	void ProcessCommands(float fElapsedTime);
+	void CompleteCommand();
 
 public:
 	bool bUserControlEnabled;
@@ -50,4 +56,15 @@ private:
 	float m_fDuration;
 	float m_fTimeSoFar;
 
+};
+
+class cCommand_ShowDialog : public cCommand
+{
+public: 
+	cCommand_ShowDialog(vector<string>line);
+	void Start() override;
+
+
+private:
+	vector<string> vecLines;
 };

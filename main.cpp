@@ -25,6 +25,9 @@ private:
 
 	cDynamic* m_pPlayer = nullptr;
 	
+	vector<cDynamic*> m_vecDynamics;
+
+
 	cScriptProcessor m_script;
 
 	float fCameraPosX = 0.0f;
@@ -56,19 +59,29 @@ private:
 protected:
 	virtual bool OnUserCreate()
 	{
+		cCommand::g_engine = this;
 		RPG_Assets::get().LoadSprites();
 		
 		m_sprFont = RPG_Assets::get().GetSprite("Font");
 		
 		m_pCurrentMap = new cMap_Village1();
 
-		spriteTiles = new olcSprite(L"../SpriteEditor/mario1.spr");
-		spriteMan = new olcSprite(L"../SpriteEditor/miniJario.spr");
-
 		m_pPlayer = new cDynamicCreature("player", RPG_Assets::get().GetSprite("player"));
 		m_pPlayer->px = 5.0f;
 		m_pPlayer->py = 5.0f;
+		
+		cDynamic* ob1 = new cDynamicCreature("skelly1", RPG_Assets::get().GetSprite("skelly"));
+		ob1->px = 12.0f;
+		ob1->py = 12.0f;
+		
+		cDynamic* ob2 = new cDynamicCreature("skelly2", RPG_Assets::get().GetSprite("skelly"));
+		ob2->px = 5.0f;
+		ob2->py = 8.0f;
 
+		m_vecDynamics.push_back(m_pPlayer);
+		m_vecDynamics.push_back(ob1);
+		m_vecDynamics.push_back(ob2);
+		
 
 		return true;
 	}
@@ -110,62 +123,79 @@ protected:
 				{
 					m_script.AddCommand(new cCommand_MoveTo(m_pPlayer, 10, 10, 3.0f));
 					m_script.AddCommand(new cCommand_MoveTo(m_pPlayer, 15, 10, 3.0f));
+					m_script.AddCommand(new cCommand_MoveTo(m_vecDynamics[1], 15, 12, 2.0f));
+					m_script.AddCommand(new cCommand_ShowDialog({"Grrrr"}));
+					m_script.AddCommand(new cCommand_ShowDialog({"I think OOP", "is really useful!"}));
+
 					m_script.AddCommand(new cCommand_MoveTo(m_pPlayer, 15, 15, 3.0f));
 					m_script.AddCommand(new cCommand_MoveTo(m_pPlayer, 10, 10, 3.0f));
 				}
 			}
 		}
+		else
+		{
+			//Scripting system is in control
+			if (GetKey(VK_SPACE).bReleased)
+			{
+				m_bShowDialog = false;
+				m_script.CompleteCommand();
+			}
+
+
+		}
 		
-		cDynamic* object = m_pPlayer;
-
-		float fNewObjectPosX = object->px + object->vx * fElapsedTime;
-		float fNewObjectPosY = object->py + object->vy * fElapsedTime;
-
-		//Collision
-		if (object->vx <= 0)
+		for (auto& object : m_vecDynamics)
 		{
-			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.9f) )
+
+
+			float fNewObjectPosX = object->px + object->vx * fElapsedTime;
+			float fNewObjectPosY = object->py + object->vy * fElapsedTime;
+
+			//Collision
+			if (object->vx <= 0)
 			{
-				fNewObjectPosX = (int)fNewObjectPosX + 1;
-				object->vx = 0;
+				if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.9f))
+				{
+					fNewObjectPosX = (int)fNewObjectPosX + 1;
+					object->vx = 0;
+				}
+
 			}
-				 
-		}
-		else
-		{
-			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.9f) )
+			else
 			{
-				fNewObjectPosX = (int)fNewObjectPosX;
-				object->vx = 0;
-			}
-		}
-
-		if (object->vy <= 0)
-		{
-			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY) )
-			{
-				fNewObjectPosY = (int)fNewObjectPosY + 1;
-				object->vx = 0;
+				if (m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.9f))
+				{
+					fNewObjectPosX = (int)fNewObjectPosX;
+					object->vx = 0;
+				}
 			}
 
-		}
-		else
-		{
-			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY + 1.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY + 1.0f))
+			if (object->vy <= 0)
 			{
-				fNewObjectPosY = (int)fNewObjectPosY;
-				object->vy = 0;
+				if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY))
+				{
+					fNewObjectPosY = (int)fNewObjectPosY + 1;
+					object->vx = 0;
+				}
+
 			}
+			else
+			{
+				if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY + 1.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY + 1.0f))
+				{
+					fNewObjectPosY = (int)fNewObjectPosY;
+					object->vy = 0;
+				}
+			}
+
+			object->px = fNewObjectPosX;
+			object->py = fNewObjectPosY;
+
+			object->Update(fElapsedTime);
 		}
-
-		object->px = fNewObjectPosX;
-		object->py = fNewObjectPosY;
-
-		object->Update(fElapsedTime);
-
-		fCameraPosX = m_pPlayer->px;
-		fCameraPosY = m_pPlayer->py;
-
+			fCameraPosX = m_pPlayer->px;
+			fCameraPosY = m_pPlayer->py;
+		
 		// Draw the level
 		int nTileWidth = 16;
 		int nTileHeight = 16;
@@ -202,12 +232,51 @@ protected:
 		}
 
 		//Draw object
-		object->DrawSelf(this, fOffsetX, fOffsetY);
-
-		DrawBigText("Hello Everybody!", 30, 30);
+		for (auto& object : m_vecDynamics)
+			object->DrawSelf(this, fOffsetX, fOffsetY);
 		
+		m_pPlayer->DrawSelf(this, fOffsetX, fOffsetY);
+
+		//Draw any dialog being displayed
+		if (m_bShowDialog)
+			DisplayDialog(m_vecDialogToShow, 20, 20);
+
+
+
 		return true;
 	}
+	
+	vector<string> m_vecDialogToShow;
+	bool m_bShowDialog = false;
+	float m_fDialogX = 0.0f;
+	float m_fDialogY = 0.0f;
+	
+
+	void ShowDialog(vector<string> vecLines)
+	{
+		m_vecDialogToShow = vecLines;
+		m_bShowDialog = true;
+	}
+
+	void DisplayDialog(vector<string> vecText, int x, int y)
+	{
+		int nMaxLineLength = 0;
+		int nLines = vecText.size();
+
+		for (auto l : vecText) if (l.size() > nMaxLineLength) nMaxLineLength = l.size();
+
+		//Draw box
+
+		Fill(x - 1, y - 1, x + nMaxLineLength * 8 + 1, y + nLines * 8 + 1, PIXEL_SOLID, FG_DARK_BLUE);
+		DrawLine(x - 2, y - 2, x - 2, y+nLines * 8 + 1);
+		DrawLine(x + nMaxLineLength * 8 + 1, y - 2, x + nMaxLineLength * 8 + 1, y + nLines * 8 + 1);
+		DrawLine(x - 2, y - 2, x + nMaxLineLength * 8 + 1, y - 2 );
+		DrawLine(x - 2, y + nLines * 8 + 1, x + nMaxLineLength * 8 + 1, y + nLines * 8 +1);
+
+		for (int l = 0; l < vecText.size(); l++)
+			DrawBigText(vecText[l], x, y + 1 * 8);
+	}
+
 };
 
 
@@ -215,7 +284,7 @@ protected:
 int main()
 {
 	HJ_Platformer game;
-	if (game.ConstructConsole(117, 110, 4, 4))
+	if (game.ConstructConsole(260, 240, 4, 4))
 		game.Start();
 
 	return 0;

@@ -1,5 +1,7 @@
 #include "RPG_Commands.h"
+#include "main.cpp"
 
+HJ_Platformer* cCommand::g_engine = nullptr;
 
 cScriptProcessor::cScriptProcessor()
 {
@@ -41,10 +43,20 @@ void cScriptProcessor::ProcessCommands(float fElapsedTime)
 	}
 }
 
+//Marks currently active command as complete, form external source
+void cScriptProcessor::CompleteCommand()
+{
+	if (!m_listCommands.empty())
+	{
+		m_listCommands.front()->bCompleted = true;
+	}
+}
+
+
 cCommand_MoveTo::cCommand_MoveTo(cDynamic* object, float x, float y, float duration)
 {
 	m_fTargetPosX = x;
-	m_fStartPosY = y;
+	m_fTargetPosY = y;
 	m_fTimeSoFar = 0.0f;
 	m_fDuration = max(duration, 0.001f);
 	m_pObject = object;
@@ -78,5 +90,13 @@ void cCommand_MoveTo::Update(float fElapsedTime)
 	}
 }
 
+cCommand_ShowDialog::cCommand_ShowDialog(vector<string>line)
+{
+	vecLines = line;
+}
 
+void cCommand_ShowDialog::Start()
+{
+	g_engine-> ShowDialog(vecLines);
+}
 
