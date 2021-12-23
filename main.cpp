@@ -56,18 +56,19 @@ private:
 protected:
 	virtual bool OnUserCreate()
 	{
-		RPG_Assets::get().LoadSprites();
+		RPG_Assets::get().LoadSprites();	// load all sprites
+		RPG_Assets::get().LoadMaps();		// load all maps
 		
 		m_sprFont = RPG_Assets::get().GetSprite("Font");
 		
-		m_pCurrentMap = new cMap_Village1();
+		m_pCurrentMap = RPG_Assets::get().GetMap("coder town");
 
 		spriteTiles = new olcSprite(L"../SpriteEditor/mario1.spr");
 		spriteMan = new olcSprite(L"../SpriteEditor/miniJario.spr");
 
 		m_pPlayer = new cDynamicCreature("player", RPG_Assets::get().GetSprite("player"));
-		m_pPlayer->px = 5.0f;
-		m_pPlayer->py = 5.0f;
+		m_pPlayer->fPositionX = 5.0f;
+		m_pPlayer->fPositionY = 5.0f;
 
 
 		return true;
@@ -81,30 +82,30 @@ protected:
 		if (m_script.bUserControlEnabled)
 		{
 
-			m_pPlayer->vx = 0.0f;
-			m_pPlayer->vy = 0.0f;
+			m_pPlayer->fVelocityX = 0.0f;
+			m_pPlayer->fVelocityY = 0.0f;
 
 			//Handle Input
 			if (IsFocused())
 			{
 				if (GetKey(VK_UP).bHeld)
 				{
-					m_pPlayer->vy = -4.0f;
+					m_pPlayer->fVelocityY = -4.0f;
 				}
 
 				if (GetKey(VK_DOWN).bHeld)
 				{
-					m_pPlayer->vy = 4.0f;
+					m_pPlayer->fVelocityY = 4.0f;
 				}
 
 				if (GetKey(VK_LEFT).bHeld)
 				{
-					m_pPlayer->vx = -4.0f;
+					m_pPlayer->fVelocityX = -4.0f;
 				}
 
 				if (GetKey(VK_RIGHT).bHeld)
 				{
-					m_pPlayer->vx = 4.0f;
+					m_pPlayer->fVelocityX = 4.0f;
 				}
 				if (GetKey(L'Z').bReleased)
 				{
@@ -118,34 +119,34 @@ protected:
 		
 		cDynamic* object = m_pPlayer;
 
-		float fNewObjectPosX = object->px + object->vx * fElapsedTime;
-		float fNewObjectPosY = object->py + object->vy * fElapsedTime;
+		float fNewObjectPosX = object->fPositionX + object->fVelocityX * fElapsedTime;
+		float fNewObjectPosY = object->fPositionY + object->fVelocityY * fElapsedTime;
 
 		//Collision
-		if (object->vx <= 0)
+		if (object->fVelocityX <= 0)
 		{
-			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->py + 0.9f) )
+			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->fPositionY + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, object->fPositionY + 0.9f) )
 			{
 				fNewObjectPosX = (int)fNewObjectPosX + 1;
-				object->vx = 0;
+				object->fVelocityX = 0;
 			}
 				 
 		}
 		else
 		{
-			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->py + 0.9f) )
+			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->fPositionY + 0.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 1.0f, object->fPositionY + 0.9f) )
 			{
 				fNewObjectPosX = (int)fNewObjectPosX;
-				object->vx = 0;
+				object->fVelocityX = 0;
 			}
 		}
 
-		if (object->vy <= 0)
+		if (object->fVelocityY <= 0)
 		{
 			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY) )
 			{
 				fNewObjectPosY = (int)fNewObjectPosY + 1;
-				object->vx = 0;
+				object->fVelocityX = 0;
 			}
 
 		}
@@ -154,17 +155,17 @@ protected:
 			if (m_pCurrentMap->GetSolid(fNewObjectPosX + 0.0f, fNewObjectPosY + 1.0f) || m_pCurrentMap->GetSolid(fNewObjectPosX + 0.9f, fNewObjectPosY + 1.0f))
 			{
 				fNewObjectPosY = (int)fNewObjectPosY;
-				object->vy = 0;
+				object->fVelocityY = 0;
 			}
 		}
 
-		object->px = fNewObjectPosX;
-		object->py = fNewObjectPosY;
+		object->fPositionX = fNewObjectPosX;
+		object->fPositionY = fNewObjectPosY;
 
 		object->Update(fElapsedTime);
 
-		fCameraPosX = m_pPlayer->px;
-		fCameraPosY = m_pPlayer->py;
+		fCameraPosX = m_pPlayer->fPositionX;
+		fCameraPosY = m_pPlayer->fPositionY;
 
 		// Draw the level
 		int nTileWidth = 16;
@@ -203,6 +204,10 @@ protected:
 
 		//Draw object
 		object->DrawSelf(this, fOffsetX, fOffsetY);
+
+		// create a third array storing which layer the tile belongs too
+		// create a new draw map loop that only draws tiles that exist in the 3rd layer, 
+		//		so that it gets drawn on top of the player character .
 
 		DrawBigText("Hello Everybody!", 30, 30);
 		

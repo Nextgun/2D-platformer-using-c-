@@ -9,10 +9,10 @@ public:
 	~cDynamic();
 
 public:
-	float px, py;
-	float vx, vy;
+	float fPositionX, fPositionY;
+	float fVelocityX, fVelocityY;
 	bool bSolidVsMap;
-	bool bSolidVsDyn;
+	bool bSolidVsDynamic;
 	bool bFreindly;
 	string sName;
 
@@ -23,3 +23,17 @@ public:
 
 };
 
+//************************************************
+
+class cDynamic_Teleport : public cDynamic
+{
+public:
+	cDynamic_Teleport(float x, float y, string sMapName, float fTargetX, float fTargetY);
+	void DrawSelf(olcConsoleGameEngineOOP* gfx, float fOffsetX, float fOffsetY) override;
+	void Update(float fElapsedTime, cDynamic* player = nullptr) override;
+
+public:
+	string sMapName;
+	float fMapPositionX;
+	float fMapPositionY;
+};

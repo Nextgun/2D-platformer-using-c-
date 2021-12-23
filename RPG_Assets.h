@@ -19,12 +19,19 @@ public:
 	{
 		return m_mapSprites[name];
 	}
+
+	cMap* GetMap(string name)
+	{
+		return m_mapMaps[name];
+	}
 	
 	void LoadSprites();
+	void LoadMaps();
 
 private:
 	RPG_Assets();
 	~RPG_Assets();
 	
 	map<string, olcSprite*> m_mapSprites;
+	map<string, cMap*> m_mapMaps;
 }; 
