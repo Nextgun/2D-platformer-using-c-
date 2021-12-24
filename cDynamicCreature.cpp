@@ -1,4 +1,10 @@
+
+/*
 #include "cDynamicCreature.h"
+#include "RPG_Assets.h"
+#include "olcConsoleGameEngineOOP.h"
+
+class RPG_Engine;
 
 cDynamicCreature::cDynamicCreature(string name, olcSprite* sprite) : cDynamic(name)
 {
@@ -65,3 +71,4 @@ void cDynamicCreature::DrawSelf(olcConsoleGameEngineOOP *gfx, float offsetx, flo
 	// the screen
 	gfx->DrawPartialSprite((fPositionX - offsetx) * 16.0f, (fPositionY - offsety) * 16.0f, m_pSprite, nSheetOffsetX, nSheetOffsetY, 16, 16);
 }
+*/

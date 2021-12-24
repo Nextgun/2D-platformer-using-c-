@@ -151,6 +151,7 @@
     <ClCompile Include="olcConsoleGameEngineOOP.cpp" />
     <ClCompile Include="RPG_Assets.cpp" />
     <ClCompile Include="RPG_Commands.cpp" />
+    <ClCompile Include="RPG_Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cDynamic.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="olcConsoleGameEngineOOP.h" />
     <ClInclude Include="RPG_Assets.h" />
     <ClInclude Include="RPG_Commands.h" />
+    <ClInclude Include="RPG_Engine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

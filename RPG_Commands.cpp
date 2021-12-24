@@ -1,7 +1,7 @@
 #include "RPG_Commands.h"
-#include "main.cpp"
+#include "RPG_Engine.h"
 
-HJ_Platformer* cCommand::g_engine = nullptr;
+RPG_Engine* cCommand::g_engine = nullptr;
 
 cScriptProcessor::cScriptProcessor()
 {

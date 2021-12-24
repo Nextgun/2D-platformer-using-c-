@@ -2,7 +2,8 @@
 
 #include "olcConsoleGameEngineOOP.h"
 #include "RPG_Assets.h"
-
+#include "cDynamic.h"
+#include "RPG_Commands.h"
 class cMap
 {
 public:
@@ -19,7 +20,10 @@ public:
 	bool GetSolid(int x, int y);
 	bool Create(string fileData, olcSprite* sprite, string name);
 
-	virtual bool PopulateDynamics(vector<cDynamic*>& vDynamics);
+	virtual bool PopulateDynamics(vector<cDynamic*>& vDynamics)
+	{
+		return false;
+	}
 
 private:
 	int* m_indices = nullptr;
@@ -32,7 +36,7 @@ class cMap_Village1 : public cMap
 public:
 	cMap_Village1();
 
-	bool PopulateDynamics(vector<cDynamic*> &vDynamics);
+	bool PopulateDynamics(vector<cDynamic*> &vDynamics) override;
 
 };
 
@@ -41,6 +45,6 @@ class cMap_Home1 : public cMap
 public:
 	cMap_Home1();
 
-	bool PopulateDynamics(vector<cDynamic*>& vDynamics);
+	bool PopulateDynamics(vector<cDynamic*>& vDynamics) override;
 
 };

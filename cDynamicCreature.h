@@ -1,8 +1,12 @@
+/*
 #pragma once
 
-#include "cDynamic.h"
+#include "RPG_Assets.h"
+#include "olcConsoleGameEngineOOP.h"
 
-class cDynamicCreature : public cDynamic
+
+
+class cDynamicCreature : public cDynamicCreature
 {
 public:
 	cDynamicCreature(string name, olcSprite* sprite);
@@ -15,13 +19,14 @@ protected:
 	enum { STANDING, WALKING, CELEBRATING, DEAD } m_nGraphicState;
 
 public:
-	int nHealth;
+	int nHealth; 
 	int nHealthMax;
 	
 
 public:
 	void DrawSelf(olcConsoleGameEngineOOP* gfx, float offsetx, float offsety) override;
-	void Update(float fElapsedtime) override;
+	void Update(float fElapsedTime, cDynamic* player = nullptr) override;
 
 };
 
+*/

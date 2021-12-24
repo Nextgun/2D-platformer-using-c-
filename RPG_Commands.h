@@ -2,10 +2,9 @@
 
 #include "cDynamic.h"
 #include <list>
-
 using namespace std;
 
-class HJ_Platformer;
+class RPG_Engine;
 
 class cCommand
 {
@@ -18,8 +17,8 @@ public:
 
 	virtual void Start() {}
 	virtual void Update(float fElapsedTime) {};
-	
-	static HJ_Platformer* g_engine;
+
+	static RPG_Engine* g_engine;
 };
 
 class cScriptProcessor

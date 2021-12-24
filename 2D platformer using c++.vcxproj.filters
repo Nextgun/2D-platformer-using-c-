@@ -27,13 +27,16 @@
     <ClCompile Include="RPG_Assets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-     <ClCompile Include="cDynamic.cpp">
+    <ClCompile Include="cDynamic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cDynamicCreature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RPG_Commands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RPG_Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RPG_Commands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RPG_Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

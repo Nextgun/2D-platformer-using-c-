@@ -3,6 +3,8 @@
 #include "olcConsoleGameEngineOOP.h"
 
 #include<map>
+class cMap;
+
 class RPG_Assets
 {
 public:

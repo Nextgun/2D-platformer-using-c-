@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+
 cMap::cMap()
 {
 	nWidth = 0;
@@ -70,7 +71,7 @@ bool cMap_Village1::PopulateDynamics(vector<cDynamic*> &vDynamics)
 
 cMap_Home1::cMap_Home1()
 {
-	Create("rpgdata/map/home.lvl", RPG_Assets::get().GetSprite("village"), "Home");
+	Create("rpgdata/map/home.lvl", RPG_Assets::get().GetSprite("hitech"), "home");
 }
 
 
